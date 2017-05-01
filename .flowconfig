@@ -1,0 +1,20 @@
+[ignore]
+# https://github.com/facebook/fbjs/issues/64
+.*/node_modules/fbjs.*
+.*/node_modules/config-chain/test/broken.json
+.*/node_modules/npm/test/.*
+config/
+scripts/
+
+[include]
+
+[libs]
+flow-typed/
+flow/libdefs/
+
+[options]
+module.name_mapper.extension='less' -> '<PROJECT_ROOT>/flow/CSSModule.js.flow'
+
+# Allow dynamic require statements
+module.ignore_non_literal_requires=true
+esproposal.decorators=ignore

@@ -1,0 +1,27 @@
+{
+  "include": [
+    "src/**/*.js"
+  ],
+  "exclude": [
+    "src/**/*.spec.js",
+    "dist",
+    "flow",
+    "flow-typed",
+    "scripts",
+    "test",
+    "config",
+    "src/flowTypes.js"
+  ],
+  "require": [
+    "babel-register"
+  ],
+  "reporter": [
+    "lcov",
+    "text-summary"
+  ],
+  "sourceMap": false,
+  "instrument": false,
+  "cache": true,
+  "all": true,
+  "check-coverage": false
+}
