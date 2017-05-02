@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
 ## [Unreleased][]
+### Changed
+- Force version patch
 
 ## [0.1.0][] - 2017-05-02
 ### Changed
