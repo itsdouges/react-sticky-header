@@ -9,7 +9,6 @@
 
 'use strict';
 
-const less = require('rollup-plugin-less');
 const fs = require('fs');
 const del = require('del');
 const rollup = require('rollup');
