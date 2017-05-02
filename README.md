@@ -6,7 +6,7 @@
 [![codecov](https://codecov.io/gh/madou/react-sticky-header/branch/master/graph/badge.svg)](https://codecov.io/gh/madou/react-sticky-header)
 [![Dependency Status](http://img.shields.io/david/madou/react-sticky-header.svg?style=flat-square)](https://david-dm.org/madou/react-sticky-header)
 
-Lightweight sticky header made for React that works with both colours and images. You can see an example over at [Guild Wars 2 Armory](https://gw2armory.com), scroll down at the front page to see the stickyness!
+Lightweight (1.2 kB minified and gzipped!) sticky header made for React that works with both colours and images. You can see an example over at [Guild Wars 2 Armory](https://gw2armory.com), scroll down at the front page to see the stickyness!
 
 <p align="center">
   <img src="./example.gif" style="margin:0 auto" />
