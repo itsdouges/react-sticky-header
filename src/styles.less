@@ -1,9 +1,3 @@
-@headerZ: 60;
-@searchBarZ: 40;
-@bigBgZ: 30;
-@floatingBgZ: 20;
-@backBg: 10;
-
 .ReactStickyHeader_root {
   width: 100%;
   position: relative;
@@ -19,7 +13,7 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: @headerZ;
+  z-index: 60;
 }
 
 .ReactStickyHeader_background,
@@ -31,15 +25,15 @@
   height: 100%;
   width: 100%;
   position: absolute;
-  z-index: @bigBgZ;
+  z-index: 30;
 }
 
 .ReactStickyHeader_midground {
   position: fixed;
-  z-index: @floatingBgZ;
+  z-index: 20;
   transform: translateY(-100%);
 }
 
 .ReactStickyHeader_background-bg {
-  z-index: @backBg;
+  z-index: 10;
 }

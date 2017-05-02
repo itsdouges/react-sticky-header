@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
 ## [Unreleased][]
+### Removed
+- Normalizecss dependency
+
+### Fixed
+- Styles not being added to dist
 
 ## [0.1.1][] - 2017-05-02
 ### Changed

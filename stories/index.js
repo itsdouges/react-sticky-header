@@ -7,7 +7,6 @@ import cx from 'classnames';
 
 import Page from './Page';
 import ReactStickyHeader from '../src/ReactStickyHeader';
-import '../src/styles.less';
 import clouds from './clouds.jpg';
 
 class ExamplePage extends Component {

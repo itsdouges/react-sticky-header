@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import cx from 'classnames';
 
 import { addEvent } from './utils';
+import './styles.less';
 
 type Props = {
   children?: Children,
