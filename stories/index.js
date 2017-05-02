@@ -8,6 +8,7 @@ import cx from 'classnames';
 import Page from './Page';
 import ReactStickyHeader from '../src/ReactStickyHeader';
 import clouds from './clouds.jpg';
+import '../src/styles.less';
 
 class ExamplePage extends Component {
   state = {

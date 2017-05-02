@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
 ## [Unreleased][]
+## Fixed
+- Styles build
 
 ## [0.1.2][] - 2017-05-02
 ### Removed

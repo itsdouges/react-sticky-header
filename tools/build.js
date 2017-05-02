@@ -19,7 +19,13 @@ const pkg = require('../package.json');
 let promise = Promise.resolve();
 
 // Clean up the output directory
-promise = promise.then(() => del(['dist/*']));
+promise = promise.then(() => del(['dist/*'])).then(() => {
+  try {
+    fs.statSync('dist');
+  } catch (e) {
+    fs.mkdirSync('dist');
+  }
+});
 
 // Compile source code into a distributable format with Babel
 for (const format of ['es6', 'cjs', 'umd']) {
@@ -34,12 +40,6 @@ for (const format of ['es6', 'cjs', 'umd']) {
         runtimeHelpers: true,
         presets: pkg.babel.presets.map((x) => (x === 'es2015' ? 'es2015-rollup' : x)),
       })),
-      // Start React configuration
-      format === 'es6' && less({
-        // We only want to output once. This is just a dirty hack.
-        output: 'dist/styles.css',
-      }),
-      // End React configuration
     ],
   }).then((bundle) => bundle.write({
     dest: `dist/${format === 'cjs' ? 'index' : `index.${format}`}.js`,
