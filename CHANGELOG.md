@@ -4,11 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-
 ## [Unreleased][]
+### Added
+- Image to readme
 
 ## [0.1.3][] - 2017-05-02
-## Fixed
+### Fixed
 - Styles build
 
 ## [0.1.2][] - 2017-05-02
