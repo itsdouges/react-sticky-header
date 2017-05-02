@@ -6,50 +6,57 @@
 [![codecov](https://codecov.io/gh/madou/react-sticky-header/branch/master/graph/badge.svg)](https://codecov.io/gh/madou/react-sticky-header)
 [![Dependency Status](http://img.shields.io/david/madou/react-sticky-header.svg?style=flat-square)](https://david-dm.org/madou/react-sticky-header)
 
-> Short sentance for what this module does!
+Lightweight sticky header made for React that works with both colours and images. You can see an example over at [Guild Wars 2 Armory](https://gw2armory.com), scroll down at the front page to see the stickyness!
 
-## How to Install
-
-Using either npm:
+## Installation
 
 ```sh
 npm install react-sticky-header
 ```
 
-Or yarn:
-
-```sh
-yarn add react-sticky-header
-```
-
 ## Usage
-
-### returnsTwo(): number
-
-```js
-import returnsTwo from 'react-sticky-header';
-returnsTwo();
-// 2
-```
-
-### `<Component />`
 
 ```javascript
 import 'react-sticky-header/styles.css';
-import { Component } from 'react-sticky-header';
+import ReactStickyHeader from 'react-sticky-header';
 import ReactDOM from 'react-dom';
 
 ReactDOM.render(
-  <Component initialCount={2} />,
+  <ReactStickyHeader
+    // This will be the sticky strip.
+    header={
+      <div className={cx('Header_root', { sticky })}>
+        <h1 className="Header_title">ReactStickyHeader</h1>
+
+        <ul className="Header_links">
+          <li className="Header_link">When</li>
+          <li className="Header_link">Why</li>
+          <li className="Header_link">About</li>
+        </ul>
+      </div>
+    }
+  >
+    <section>
+      // More header stuff here, this won't be sticky.
+    </section>
+  </ReactStickyHeader>,
   document.getElementById('container')
 );
 ```
 
-| prop    | type    | required |
-|---------|---------|----------|
-| initialCount | number  | no      |
+| prop | type | required |
+|-|-|-|
+| children | Children  | no |
+| header | Children | yes |
+| backgroundImage | string | no |
+| backgroundColor | string | no |
+| headerOnly | boolean | no |
+| onSticky | (boolean) => void | no |
+| className | string | no |
 
-### Local development
+### React Story Book
+
+To run the component in various modes, run the following command then go to `http://localhost:6006/`.
 
 ```bash
 npm start
@@ -58,5 +65,5 @@ npm start
 ### Testing
 
 ```bash
-npm run tdd
+npm test
 ```
