@@ -39,7 +39,6 @@ module.exports = {
 
     'react/jsx-filename-extension': 'off',
     'react/jsx-sort-props': 'off',
-    'react/react-in-jsx-scope': 'off',
     'react/sort-comp': ['error', {
       order: [
         'type-annotations',

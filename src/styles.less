@@ -1,3 +1,45 @@
-.Component__root {
-  color: red;
+@headerZ: 60;
+@searchBarZ: 40;
+@bigBgZ: 30;
+@floatingBgZ: 20;
+@backBg: 10;
+
+.ReactStickyHeader_root {
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+.ReactStickyHeader_fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: @headerZ;
+}
+
+.ReactStickyHeader_background,
+.ReactStickyHeader_foreground,
+.ReactStickyHeader_midground,
+.ReactStickyHeader_background-bg {
+  background-position: center top;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: @bigBgZ;
+}
+
+.ReactStickyHeader_midground {
+  position: fixed;
+  z-index: @floatingBgZ;
+  transform: translateY(-100%);
+}
+
+.ReactStickyHeader_background-bg {
+  z-index: @backBg;
 }
