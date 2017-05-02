@@ -8,6 +8,10 @@
 
 Lightweight sticky header made for React that works with both colours and images. You can see an example over at [Guild Wars 2 Armory](https://gw2armory.com), scroll down at the front page to see the stickyness!
 
+<p align="center">
+  <img src="./example.gif" style="margin:0 auto" />
+</p>
+
 ## Installation
 
 ```sh
