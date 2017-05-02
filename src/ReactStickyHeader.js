@@ -1,14 +1,16 @@
 // @flow
 
+import type { Children } from 'react';
+
 import React, { Component } from 'react';
 import cx from 'classnames';
 
 import { addEvent } from './utils';
 
 type Props = {
-  children?: any,
-  header: any,
-  backgroundSrc?: string,
+  children?: Children,
+  header: Children,
+  backgroundImage?: string,
   backgroundColor?: string,
   headerOnly?: boolean,
   onSticky?: (isSticky: boolean) => void,
@@ -55,7 +57,6 @@ export default class ReactStickyHeader extends Component {
       const stickyHeaderHeight = this._fixed.offsetHeight;
       const headerHeight = this._root.offsetHeight;
       const headerBounds = this._root.getBoundingClientRect();
-
       const sticky = ((headerHeight + headerBounds.top) - stickyHeaderHeight) <= 0;
 
       if (sticky && !isSticky) {
@@ -64,11 +65,7 @@ export default class ReactStickyHeader extends Component {
         });
 
         onSticky && onSticky(true);
-
-        return;
-      }
-
-      if (!sticky && isSticky) {
+      } else if (!sticky && isSticky) {
         this.setState({
           isSticky: false,
         });
@@ -89,9 +86,9 @@ export default class ReactStickyHeader extends Component {
 
   render () {
     const { isSticky } = this.state;
-    const { children, header, backgroundSrc, backgroundColor, headerOnly, className } = this.props;
+    const { children, header, backgroundImage, backgroundColor, headerOnly, className } = this.props;
 
-    const backgroundImage = backgroundSrc && `url(${backgroundSrc})`;
+    const backgroundUrl = backgroundImage && `url(${backgroundImage})`;
     const rootOffsetHeight = this._root && this._root.offsetHeight;
     const fixedOffsetHeight = this._fixed && this._fixed.offsetHeight;
 
@@ -106,22 +103,26 @@ export default class ReactStickyHeader extends Component {
           style={{
             height: rootOffsetHeight || fixedOffsetHeight,
             top: fixedOffsetHeight,
-            backgroundImage,
+            backgroundImage: backgroundUrl,
             backgroundColor,
           }}
         />
 
         {headerOnly && <div style={{ height: fixedOffsetHeight }} />}
 
-        {headerOnly || <div
-          className="ReactStickyHeader_background-bg"
-          style={{ backgroundImage, backgroundColor }}
-        />}
+        {headerOnly || (
+          <div
+            className="ReactStickyHeader_background-bg"
+            style={{ backgroundImage: backgroundUrl, backgroundColor }}
+          />
+        )}
 
-        {headerOnly || <div
-          className="ReactStickyHeader_foreground"
-          style={{ opacity: isSticky ? 0 : 1, backgroundImage, backgroundColor }}
-        />}
+        {headerOnly || (
+          <div
+            className="ReactStickyHeader_foreground"
+            style={{ opacity: isSticky ? 0 : 1, backgroundImage: backgroundUrl, backgroundColor }}
+          />
+        )}
 
         {headerOnly || children}
       </header>

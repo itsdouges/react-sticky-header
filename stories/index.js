@@ -1,13 +1,14 @@
 // @flow
 
 import React, { Component } from 'react';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import 'normalize-css';
 import cx from 'classnames';
 
 import Page from './Page';
 import ReactStickyHeader from '../src/ReactStickyHeader';
 import '../src/styles.less';
+import clouds from './clouds.jpg';
 
 class ExamplePage extends Component {
   state = {
@@ -15,6 +16,8 @@ class ExamplePage extends Component {
   };
 
   onSticky = (sticky: boolean) => {
+    action(`Sticky: ${sticky ? 'yes' : 'no'}`);
+
     this.setState({
       sticky,
     });
@@ -26,23 +29,21 @@ class ExamplePage extends Component {
     return (
       <Page>
         <ReactStickyHeader
-          backgroundColor="red"
+          {...this.props}
           onSticky={this.onSticky}
           header={
             <div className={cx('Header_root', { sticky })}>
               <h1 className="Header_title">ReactStickyHeader</h1>
 
               <ul className="Header_links">
-                <li className="Header_link">Stuff</li>
-                <li className="Header_link">Links</li>
+                <li className="Header_link">When</li>
+                <li className="Header_link">Why</li>
                 <li className="Header_link">About</li>
               </ul>
             </div>
           }
         >
-          <div style={{ height: '300px', color: 'red' }}>
-            Do stuff
-          </div>
+          <div style={{ height: '300px' }} />
         </ReactStickyHeader>
       </Page>
     );
@@ -50,4 +51,6 @@ class ExamplePage extends Component {
 }
 
 storiesOf('ReactStickyHeader')
-  .add('default', () => <ExamplePage />);
+  .add('backgroundColor', () => <ExamplePage backgroundColor="red" />)
+  .add('backgroundImage', () => <ExamplePage backgroundImage={clouds} />)
+  .add('headerOnly', () => <ExamplePage headerOnly backgroundColor="red" />);
