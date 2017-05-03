@@ -27,7 +27,6 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
-    "classnames": "^2.2.5",
     "react": "^15.5.4"
   },
   "devDependencies": {

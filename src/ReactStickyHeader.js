@@ -3,7 +3,6 @@
 import type { Children } from 'react';
 
 import React, { Component } from 'react';
-import cx from 'classnames';
 
 import { addEvent } from './utils';
 
@@ -91,9 +90,10 @@ export default class ReactStickyHeader extends Component {
     const backgroundUrl = backgroundImage && `url(${backgroundImage})`;
     const rootOffsetHeight = this._root && this._root.offsetHeight;
     const fixedOffsetHeight = this._fixed && this._fixed.offsetHeight;
+    const headerClassName = `ReactStickyHeader_root${className ? ` ${className}` : ''}`;
 
     return (
-      <header className={cx('ReactStickyHeader_root', className)} ref={(e) => (this._root = e)}>
+      <header className={headerClassName} ref={(e) => (this._root = e)}>
         <div className="ReactStickyHeader_fixed" ref={(e) => (this._fixed = e)}>
           {header}
         </div>
