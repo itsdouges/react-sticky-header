@@ -5,7 +5,14 @@
   "repository": "madou/react-sticky-header",
   "author": "Michael Dougall",
   "license": "MIT",
-  "keywords": [],
+  "keywords": [
+    "react",
+    "sticky header",
+    "header",
+    "sticky",
+    "header scroll",
+    "scroll"
+  ],
   "main": "index.js",
   "jsnext:main": "index.es6.js",
   "scripts": {
