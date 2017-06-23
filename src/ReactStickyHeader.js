@@ -3,16 +3,19 @@
 import type { Children } from 'react';
 
 import React, { Component } from 'react';
+import throttle from 'lodash/throttle';
 
 import { addEvent } from './utils';
 
+const noop = () => {};
+
 type Props = {
-  children?: Children,
+  onSticky: (isSticky: boolean) => void,
   header: Children,
+  children?: Children,
   backgroundImage?: string,
   backgroundColor?: string,
   headerOnly?: boolean,
-  onSticky?: (isSticky: boolean) => void,
   className?: string,
 };
 
@@ -23,10 +26,14 @@ type State = {
 export default class ReactStickyHeader extends Component {
   // eslint-disable-next-line react/sort-comp
   props: Props;
-  detatch: () => void;
+  detatch: () => void = noop;
   initialised: boolean;
   _fixed: HTMLElement;
   _root: HTMLElement;
+
+  static defaultProps = {
+    onSticky: noop,
+  };
 
   state: State = {
     isSticky: false,
@@ -63,20 +70,34 @@ export default class ReactStickyHeader extends Component {
           isSticky: true,
         });
 
-        onSticky && onSticky(true);
+        onSticky(true);
       } else if (!sticky && isSticky) {
         this.setState({
           isSticky: false,
         });
 
-        onSticky && onSticky(false);
+        onSticky(false);
       }
     });
   };
 
+  onResize = () => {
+    // We want to flush a re-render incase the children have changed size from CSS.
+    this.setState({});
+
+    // We want to check if because of a resize the header is now sticky or not.
+    this.onScroll();
+  };
+
   initialise () {
     if (!this.initialised) {
-      this.detatch = addEvent('scroll', this.onScroll);
+      const detatchScroll = addEvent('scroll', this.onScroll);
+      const detatchResize = addEvent('resize', throttle(this.onResize, 50));
+
+      this.detatch = () => [
+        detatchScroll,
+        detatchResize,
+      ].forEach((detatch) => detatch());
     }
 
     this.onScroll();
