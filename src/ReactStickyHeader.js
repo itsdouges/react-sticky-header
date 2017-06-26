@@ -35,26 +35,10 @@ export default class ReactStickyHeader extends Component {
   };
 
   componentDidMount () {
-    if (!this.props.headerOnly) {
-      // Attach event listeners only if the component is header only mode.
-      this.initialise();
-    } else {
-      // Force state change as we need to calculate the header background containers.
-      // eslint-disable-next-line react/no-did-mount-set-state
-      this.setState({});
-    }
-  }
-
-  componentWillReceiveProps (prevProps: Props) {
-    if (this.props.headerOnly && !prevProps.headerOnly) {
-      // If the component was turned into header only mode, remove the event listeners.
-      this._detatch();
-      // Force state change as we need to re-calculate the header background containers.
-      this.setState({});
-    } else if (!this.props.headerOnly && prevProps.headerOnly) {
-      // If the component was turned into header sticky mode, add the event listeners back.
-      this.initialise();
-    }
+    this.initialise();
+    // Force state change as we need to calculate the header background containers.
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({});
   }
 
   componentWillUnmount () {
