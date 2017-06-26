@@ -1,10 +1,7 @@
 // @flow
 
 import type { Children } from 'react';
-
 import React, { Component } from 'react';
-import throttle from 'lodash/throttle';
-
 import { addEvent } from './utils';
 
 const noop = () => {};
@@ -12,22 +9,18 @@ const noop = () => {};
 type Props = {
   onSticky: (isSticky: boolean) => void,
   header: Children,
+  headerOnly: boolean,
   children?: Children,
   backgroundImage?: string,
   backgroundColor?: string,
-  headerOnly: boolean,
   className?: string,
-};
-
-type State = {
-  isSticky: boolean,
 };
 
 export default class ReactStickyHeader extends Component {
   // eslint-disable-next-line react/sort-comp
   props: Props;
-  detatch: () => void = noop;
-  initialised: boolean;
+  _detatch: () => void = noop;
+  _initialised: boolean;
   _fixed: HTMLElement;
   _root: HTMLElement;
   _rafExecuting = false;
@@ -37,7 +30,7 @@ export default class ReactStickyHeader extends Component {
     headerOnly: false,
   };
 
-  state: State = {
+  state = {
     isSticky: this.props.headerOnly,
   };
 
@@ -55,7 +48,7 @@ export default class ReactStickyHeader extends Component {
   componentWillReceiveProps (prevProps: Props) {
     if (this.props.headerOnly && !prevProps.headerOnly) {
       // If the component was turned into header only mode, remove the event listeners.
-      this.detatch();
+      this._detatch();
       // Force state change as we need to re-calculate the header background containers.
       this.setState({});
     } else if (!this.props.headerOnly && prevProps.headerOnly) {
@@ -65,10 +58,10 @@ export default class ReactStickyHeader extends Component {
   }
 
   componentWillUnmount () {
-    this.detatch();
+    this._detatch();
   }
 
-  onScroll = () => {
+  calculateStickyState = () => {
     if (this._rafExecuting) {
       return;
     }
@@ -104,22 +97,24 @@ export default class ReactStickyHeader extends Component {
     this.setState({});
 
     // We want to check if because of a resize the header is now sticky or not.
-    this.onScroll();
+    this.calculateStickyState();
   };
 
   initialise () {
-    if (!this.initialised) {
-      const detatchScroll = addEvent('scroll', this.onScroll);
-      const detatchResize = addEvent('resize', throttle(this.onResize, 50));
-
-      this.detatch = () => {
-        [detatchScroll, detatchResize].forEach((detatch) => detatch());
-        this.initialised = false;
-      };
+    if (this._initialised) {
+      return;
     }
 
-    this.onScroll();
-    this.initialised = true;
+    const detatchScroll = addEvent('scroll', this.calculateStickyState);
+    const detatchResize = addEvent('resize', this.onResize);
+
+    this._detatch = () => {
+      [detatchScroll, detatchResize].forEach((detatch) => detatch());
+      this._initialised = false;
+    };
+
+    this.calculateStickyState();
+    this._initialised = true;
   }
 
   render () {
