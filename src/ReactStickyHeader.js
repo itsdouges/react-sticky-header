@@ -4,7 +4,7 @@ import type { Children } from 'react';
 import React, { Component } from 'react';
 import { addEvent } from './utils';
 
-const noop = () => {};
+const noop: any = () => {};
 
 type Props = {
   onSticky: (isSticky: boolean) => void,
