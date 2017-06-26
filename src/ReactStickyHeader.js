@@ -124,9 +124,10 @@ export default class ReactStickyHeader extends Component {
 
   render () {
     const backgroundUrl = this.props.backgroundImage && `url(${this.props.backgroundImage})`;
-    const rootOffsetHeight = this._root && this._root.offsetHeight;
-    const fixedOffsetHeight = this._fixed && this._fixed.offsetHeight;
     const headerClassName = `ReactStickyHeader_root${this.props.className ? ` ${this.props.className}` : ''}`;
+
+    const headerContainerHeight = this._root && this._root.offsetHeight;
+    const fixedHeaderHeight = this._fixed && this._fixed.offsetHeight;
 
     return (
       <header className={`${headerClassName}${this.state.isSticky ? ' is-sticky' : ''}`} ref={(e) => (this._root = e)}>
@@ -137,14 +138,14 @@ export default class ReactStickyHeader extends Component {
         <div
           className="ReactStickyHeader_midground"
           style={{
-            height: rootOffsetHeight || fixedOffsetHeight,
-            top: fixedOffsetHeight,
+            height: headerContainerHeight || fixedHeaderHeight,
+            top: fixedHeaderHeight,
             backgroundImage: backgroundUrl,
             backgroundColor: this.props.backgroundColor,
           }}
         />
 
-        {this.props.headerOnly && <div style={{ height: fixedOffsetHeight }} />}
+        {this.props.headerOnly && <div style={{ height: fixedHeaderHeight }} />}
 
         {this.props.headerOnly || (
           <div
