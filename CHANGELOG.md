@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Header changing size from CSS causing the background to not update their position
 
+### Changed
+- Small perf tweaks
+
 ### Added
 - Test coverage
 

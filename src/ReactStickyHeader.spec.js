@@ -1,6 +1,6 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
-// import Component from './Component';
+import React from 'react';
+import { shallow } from 'enzyme';
+import Component from './Component';
 
 describe('<ReactStickyHeader />', () => {
   it('should render with hero', () => {

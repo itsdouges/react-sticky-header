@@ -17,22 +17,16 @@ class ExamplePage extends Component {
 
   onSticky = (sticky: boolean) => {
     action(`Sticky: ${sticky ? 'yes' : 'no'}`);
-
-    this.setState({
-      sticky,
-    });
   };
 
   render () {
-    const { sticky } = this.state;
-
     return (
       <Page>
         <ReactStickyHeader
           {...this.props}
           onSticky={this.onSticky}
           header={
-            <div className={cx('Header_root', { sticky })}>
+            <div className="Header_root">
               <h1 className="Header_title">ReactStickyHeader</h1>
 
               <ul className="Header_links">

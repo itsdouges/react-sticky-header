@@ -15,7 +15,7 @@ type Props = {
   children?: Children,
   backgroundImage?: string,
   backgroundColor?: string,
-  headerOnly?: boolean,
+  headerOnly: boolean,
   className?: string,
 };
 
@@ -30,25 +30,38 @@ export default class ReactStickyHeader extends Component {
   initialised: boolean;
   _fixed: HTMLElement;
   _root: HTMLElement;
+  _rafExecuting = false;
 
   static defaultProps = {
     onSticky: noop,
+    headerOnly: false,
   };
 
   state: State = {
-    isSticky: false,
+    isSticky: this.props.headerOnly,
   };
 
   componentDidMount () {
-    this.initialise();
+    if (!this.props.headerOnly) {
+      // Attach event listeners only if the component is header only mode.
+      this.initialise();
+    } else {
+      // Force state change as we need to calculate the header background containers.
+      // eslint-disable-next-line react/no-did-mount-set-state
+      this.setState({});
+    }
   }
 
-  componentDidUpdate (prevProps: Props) {
-    if (prevProps.headerOnly === this.props.headerOnly) {
-      return;
+  componentWillReceiveProps (prevProps: Props) {
+    if (this.props.headerOnly && !prevProps.headerOnly) {
+      // If the component was turned into header only mode, remove the event listeners.
+      this.detatch();
+      // Force state change as we need to re-calculate the header background containers.
+      this.setState({});
+    } else if (!this.props.headerOnly && prevProps.headerOnly) {
+      // If the component was turned into header sticky mode, add the event listeners back.
+      this.initialise();
     }
-
-    this.initialise();
   }
 
   componentWillUnmount () {
@@ -56,28 +69,33 @@ export default class ReactStickyHeader extends Component {
   }
 
   onScroll = () => {
-    const { onSticky } = this.props;
-    const { isSticky } = this.state;
+    if (this._rafExecuting) {
+      return;
+    }
+
+    this._rafExecuting = true;
 
     requestAnimationFrame(() => {
       const stickyHeaderHeight = this._fixed.offsetHeight;
-      const headerHeight = this._root.offsetHeight;
-      const headerBounds = this._root.getBoundingClientRect();
-      const sticky = ((headerHeight + headerBounds.top) - stickyHeaderHeight) <= 0;
+      const headerContainer = this._root.offsetHeight;
+      const headerContainerBoundingBox = this._root.getBoundingClientRect();
+      const pastStickyThreshold = ((headerContainer + headerContainerBoundingBox.top) - stickyHeaderHeight) <= 0;
 
-      if (sticky && !isSticky) {
+      if (pastStickyThreshold && !this.state.isSticky) {
         this.setState({
           isSticky: true,
         });
 
-        onSticky(true);
-      } else if (!sticky && isSticky) {
+        this.props.onSticky(true);
+      } else if (!pastStickyThreshold && this.state.isSticky) {
         this.setState({
           isSticky: false,
         });
 
-        onSticky(false);
+        this.props.onSticky(false);
       }
+
+      this._rafExecuting = false;
     });
   };
 
@@ -94,10 +112,10 @@ export default class ReactStickyHeader extends Component {
       const detatchScroll = addEvent('scroll', this.onScroll);
       const detatchResize = addEvent('resize', throttle(this.onResize, 50));
 
-      this.detatch = () => [
-        detatchScroll,
-        detatchResize,
-      ].forEach((detatch) => detatch());
+      this.detatch = () => {
+        [detatchScroll, detatchResize].forEach((detatch) => detatch());
+        this.initialised = false;
+      };
     }
 
     this.onScroll();
@@ -105,18 +123,15 @@ export default class ReactStickyHeader extends Component {
   }
 
   render () {
-    const { isSticky } = this.state;
-    const { children, header, backgroundImage, backgroundColor, headerOnly, className } = this.props;
-
-    const backgroundUrl = backgroundImage && `url(${backgroundImage})`;
+    const backgroundUrl = this.props.backgroundImage && `url(${this.props.backgroundImage})`;
     const rootOffsetHeight = this._root && this._root.offsetHeight;
     const fixedOffsetHeight = this._fixed && this._fixed.offsetHeight;
-    const headerClassName = `ReactStickyHeader_root${className ? ` ${className}` : ''}`;
+    const headerClassName = `ReactStickyHeader_root${this.props.className ? ` ${this.props.className}` : ''}`;
 
     return (
-      <header className={headerClassName} ref={(e) => (this._root = e)}>
+      <header className={`${headerClassName}${this.state.isSticky ? ' is-sticky' : ''}`} ref={(e) => (this._root = e)}>
         <div className="ReactStickyHeader_fixed" ref={(e) => (this._fixed = e)}>
-          {header}
+          {this.props.header}
         </div>
 
         <div
@@ -125,27 +140,27 @@ export default class ReactStickyHeader extends Component {
             height: rootOffsetHeight || fixedOffsetHeight,
             top: fixedOffsetHeight,
             backgroundImage: backgroundUrl,
-            backgroundColor,
+            backgroundColor: this.props.backgroundColor,
           }}
         />
 
-        {headerOnly && <div style={{ height: fixedOffsetHeight }} />}
+        {this.props.headerOnly && <div style={{ height: fixedOffsetHeight }} />}
 
-        {headerOnly || (
+        {this.props.headerOnly || (
           <div
             className="ReactStickyHeader_background-bg"
-            style={{ backgroundImage: backgroundUrl, backgroundColor }}
+            style={{ backgroundImage: backgroundUrl, backgroundColor: this.props.backgroundColor }}
           />
         )}
 
-        {headerOnly || (
+        {this.props.headerOnly || (
           <div
             className="ReactStickyHeader_foreground"
-            style={{ opacity: isSticky ? 0 : 1, backgroundImage: backgroundUrl, backgroundColor }}
+            style={{ opacity: this.state.isSticky ? 0 : 1, backgroundImage: backgroundUrl, backgroundColor: this.props.backgroundColor }}
           />
         )}
 
-        {headerOnly || children}
+        {this.props.headerOnly || this.props.children}
       </header>
     );
   }
