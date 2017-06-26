@@ -118,14 +118,14 @@ export default class ReactStickyHeader extends Component {
   }
 
   render () {
-    const backgroundUrl = this.props.backgroundImage && `url(${this.props.backgroundImage})`;
+    const backgroundUrl = this.props.backgroundImage && `url('${this.props.backgroundImage}')`;
     const headerClassName = `ReactStickyHeader_root${this.props.className ? ` ${this.props.className}` : ''}`;
-
+    const rootClassName = `${headerClassName}${this.state.isSticky ? ' is-sticky' : ''}`;
     const headerContainerHeight = this._root && this._root.offsetHeight;
     const fixedHeaderHeight = this._fixed && this._fixed.offsetHeight;
 
     return (
-      <header className={`${headerClassName}${this.state.isSticky ? ' is-sticky' : ''}`} ref={(e) => (this._root = e)}>
+      <header className={rootClassName} ref={(e) => (this._root = e)}>
         <div className="ReactStickyHeader_fixed" ref={(e) => (this._fixed = e)}>
           {this.props.header}
         </div>
