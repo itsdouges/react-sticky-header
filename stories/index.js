@@ -3,10 +3,9 @@
 import React, { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import 'normalize-css';
-import cx from 'classnames';
 
 import Page from './Page';
-import ReactStickyHeader from '../src/ReactStickyHeader';
+import StickyHeader from '../src/ReactStickyHeader';
 import clouds from './clouds.jpg';
 import '../src/styles.less';
 
@@ -17,23 +16,17 @@ class ExamplePage extends Component {
 
   onSticky = (sticky: boolean) => {
     action(`Sticky: ${sticky ? 'yes' : 'no'}`);
-
-    this.setState({
-      sticky,
-    });
   };
 
   render () {
-    const { sticky } = this.state;
-
     return (
       <Page>
-        <ReactStickyHeader
+        <StickyHeader
           {...this.props}
           onSticky={this.onSticky}
           header={
-            <div className={cx('Header_root', { sticky })}>
-              <h1 className="Header_title">ReactStickyHeader</h1>
+            <div className="Header_root">
+              <h1 className="Header_title">StickyHeader</h1>
 
               <ul className="Header_links">
                 <li className="Header_link">When</li>
@@ -44,7 +37,7 @@ class ExamplePage extends Component {
           }
         >
           <div style={{ height: '300px' }} />
-        </ReactStickyHeader>
+        </StickyHeader>
       </Page>
     );
   }

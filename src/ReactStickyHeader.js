@@ -1,130 +1,146 @@
 // @flow
 
 import type { Children } from 'react';
-
 import React, { Component } from 'react';
-
 import { addEvent } from './utils';
 
+const noop: any = () => {};
+
 type Props = {
-  children?: Children,
+  onSticky: (isSticky: boolean) => void,
   header: Children,
+  headerOnly: boolean,
+  children?: Children,
   backgroundImage?: string,
   backgroundColor?: string,
-  headerOnly?: boolean,
-  onSticky?: (isSticky: boolean) => void,
   className?: string,
-};
-
-type State = {
-  isSticky: boolean,
 };
 
 export default class ReactStickyHeader extends Component {
   // eslint-disable-next-line react/sort-comp
   props: Props;
-  detatch: () => void;
-  initialised: boolean;
+  _detatch: () => void = noop;
+  _initialised: boolean;
   _fixed: HTMLElement;
   _root: HTMLElement;
+  _rafExecuting = false;
 
-  state: State = {
-    isSticky: false,
+  static defaultProps = {
+    onSticky: noop,
+    headerOnly: false,
+  };
+
+  state = {
+    isSticky: this.props.headerOnly,
   };
 
   componentDidMount () {
     this.initialise();
-  }
-
-  componentDidUpdate (prevProps: Props) {
-    if (prevProps.headerOnly === this.props.headerOnly) {
-      return;
-    }
-
-    this.initialise();
+    // Force state change as we need to calculate the header background containers.
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({});
   }
 
   componentWillUnmount () {
-    this.detatch();
+    this._detatch();
   }
 
-  onScroll = () => {
-    const { onSticky } = this.props;
-    const { isSticky } = this.state;
+  calculateStickyState = () => {
+    if (this._rafExecuting) {
+      return;
+    }
+
+    this._rafExecuting = true;
 
     requestAnimationFrame(() => {
       const stickyHeaderHeight = this._fixed.offsetHeight;
-      const headerHeight = this._root.offsetHeight;
-      const headerBounds = this._root.getBoundingClientRect();
-      const sticky = ((headerHeight + headerBounds.top) - stickyHeaderHeight) <= 0;
+      const headerContainer = this._root.offsetHeight;
+      const headerContainerBoundingBox = this._root.getBoundingClientRect();
+      const pastStickyThreshold = ((headerContainer + headerContainerBoundingBox.top) - stickyHeaderHeight) <= 0;
 
-      if (sticky && !isSticky) {
+      if (pastStickyThreshold && !this.state.isSticky) {
         this.setState({
           isSticky: true,
         });
 
-        onSticky && onSticky(true);
-      } else if (!sticky && isSticky) {
+        this.props.onSticky(true);
+      } else if (!pastStickyThreshold && this.state.isSticky) {
         this.setState({
           isSticky: false,
         });
 
-        onSticky && onSticky(false);
+        this.props.onSticky(false);
       }
+
+      this._rafExecuting = false;
     });
   };
 
+  onResize = () => {
+    // We want to flush a re-render incase the children have changed size from CSS.
+    this.setState({});
+
+    // We want to check if because of a resize the header is now sticky or not.
+    this.calculateStickyState();
+  };
+
   initialise () {
-    if (!this.initialised) {
-      this.detatch = addEvent('scroll', this.onScroll);
+    if (this._initialised) {
+      return;
     }
 
-    this.onScroll();
-    this.initialised = true;
+    const detatchScroll = addEvent('scroll', this.calculateStickyState);
+    const detatchResize = addEvent('resize', this.onResize);
+
+    this._detatch = () => {
+      [detatchScroll, detatchResize].forEach((detatch) => detatch());
+      this._initialised = false;
+    };
+
+    this.calculateStickyState();
+    this._initialised = true;
   }
 
   render () {
-    const { isSticky } = this.state;
-    const { children, header, backgroundImage, backgroundColor, headerOnly, className } = this.props;
-
-    const backgroundUrl = backgroundImage && `url(${backgroundImage})`;
-    const rootOffsetHeight = this._root && this._root.offsetHeight;
-    const fixedOffsetHeight = this._fixed && this._fixed.offsetHeight;
-    const headerClassName = `ReactStickyHeader_root${className ? ` ${className}` : ''}`;
+    const backgroundUrl = this.props.backgroundImage && `url('${this.props.backgroundImage}')`;
+    const headerClassName = `ReactStickyHeader_root${this.props.className ? ` ${this.props.className}` : ''}`;
+    const rootClassName = `${headerClassName}${this.state.isSticky ? ' is-sticky' : ''}`;
+    const headerContainerHeight = this._root && this._root.offsetHeight;
+    const fixedHeaderHeight = this._fixed && this._fixed.offsetHeight;
 
     return (
-      <header className={headerClassName} ref={(e) => (this._root = e)}>
+      <header className={rootClassName} ref={(e) => (this._root = e)}>
         <div className="ReactStickyHeader_fixed" ref={(e) => (this._fixed = e)}>
-          {header}
+          {this.props.header}
         </div>
 
         <div
           className="ReactStickyHeader_midground"
           style={{
-            height: rootOffsetHeight || fixedOffsetHeight,
-            top: fixedOffsetHeight,
+            height: headerContainerHeight || fixedHeaderHeight,
+            top: fixedHeaderHeight,
             backgroundImage: backgroundUrl,
-            backgroundColor,
+            backgroundColor: this.props.backgroundColor,
           }}
         />
 
-        {headerOnly && <div style={{ height: fixedOffsetHeight }} />}
+        {this.props.headerOnly && <div style={{ height: fixedHeaderHeight }} />}
 
-        {headerOnly || (
+        {this.props.headerOnly || (
           <div
             className="ReactStickyHeader_background-bg"
-            style={{ backgroundImage: backgroundUrl, backgroundColor }}
+            style={{ backgroundImage: backgroundUrl, backgroundColor: this.props.backgroundColor }}
           />
         )}
 
-        {headerOnly || (
+        {this.props.headerOnly || (
           <div
             className="ReactStickyHeader_foreground"
-            style={{ opacity: isSticky ? 0 : 1, backgroundImage: backgroundUrl, backgroundColor }}
+            style={{ opacity: this.state.isSticky ? 0 : 1, backgroundImage: backgroundUrl, backgroundColor: this.props.backgroundColor }}
           />
         )}
 
-        {headerOnly || children}
+        {this.props.headerOnly || this.props.children}
       </header>
     );
   }

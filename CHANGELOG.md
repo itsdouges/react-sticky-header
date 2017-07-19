@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
+### Fixed
+- Header changing size from CSS causing the background to not update their position
+
+### Changed
+- Small perf tweaks
+
+### Added
+- Test coverage
 
 ## [0.1.6][] - 2017-05-03
 ### Removed

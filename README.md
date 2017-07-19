@@ -6,7 +6,7 @@
 [![codecov](https://codecov.io/gh/madou/react-sticky-header/branch/master/graph/badge.svg)](https://codecov.io/gh/madou/react-sticky-header)
 [![Dependency Status](http://img.shields.io/david/madou/react-sticky-header.svg?style=flat-square)](https://david-dm.org/madou/react-sticky-header)
 
-Lightweight sticky header made for React that works with both colours and images. You can see an example over at [Guild Wars 2 Armory](https://gw2armory.com), scroll down at the front page to see the stickyness!
+Lightweight sticky header made for React that works with both colours and images. You can see an example implementation over at [Guild Wars 2 Armory](https://gw2armory.com).
 
 <p align="center">
   <img src="https://github.com/madou/react-sticky-header/blob/master/example.gif?raw=true" style="margin:0 auto" />
@@ -21,15 +21,16 @@ npm install react-sticky-header
 ## Usage
 
 ```javascript
+// Import the base CSS, if you're using webpack just import them straight.
+// Else import them into your base CSS.
 import 'react-sticky-header/styles.css';
-import ReactStickyHeader from 'react-sticky-header';
-import ReactDOM from 'react-dom';
+import StickyHeader from 'react-sticky-header';
 
-ReactDOM.render(
-  <ReactStickyHeader
-    // This will be the sticky strip.
+const MyHeader = () => (
+  <StickyHeader
+    // This is the sticky part of the header.
     header={
-      <div className={cx('Header_root', { sticky })}>
+      <div className="Header_root">
         <h1 className="Header_title">ReactStickyHeader</h1>
 
         <ul className="Header_links">
@@ -41,26 +42,32 @@ ReactDOM.render(
     }
   >
     <section>
-      // More header stuff here, this won't be sticky.
+      <p>
+        This section will be what the sticky header scrolls over before entering into
+        sticky state. See the gif above or run the test story book to see examples.
+      </p>
     </section>
-  </ReactStickyHeader>,
-  document.getElementById('container')
+  </StickyHeader>
 );
 ```
 
-| prop | type | required |
+| prop | type | required | description |
 |-|-|-|
-| children | Children  | no |
-| header | Children | yes |
-| backgroundImage | string | no |
-| backgroundColor | string | no |
-| headerOnly | boolean | no |
-| onSticky | (boolean) => void | no |
-| className | string | no |
+| header | Children | yes | A react element that will be the sticky part of the header. |
+| children | Children  | no | Elements that you want to appear under the sticky header. |
+| headerOnly | boolean | no | Use this to force the header into "sticky" mode. It will automatically hide the `children` and calculate the height spacer for `header`. |
+| onSticky | (boolean) => void | no | Callback fired when the header enters/leaves sticky state. See Sticky State section. |
+| backgroundImage | string | no | Self explanatory. |
+| backgroundColor | string | no | Self explanatory. |
+| className | string | no | Self explanatory. |
 
-### React Story Book
+### Sticky State
 
-To run the component in various modes, run the following command then go to `http://localhost:6006/`.
+When the component enters sticky state, it will add a class name `is-sticky` to the root element of the header.
+
+## React Story Book
+
+To run the component in various states, run the following command then go to `http://localhost:6006/`.
 
 ```bash
 npm start
