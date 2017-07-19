@@ -52,7 +52,7 @@ const MyHeader = () => (
 ```
 
 | prop | type | required | description |
-|-|-|-|
+|-|-|-|-|
 | header | Children | yes | A react element that will be the sticky part of the header. |
 | children | Children  | no | Elements that you want to appear under the sticky header. |
 | headerOnly | boolean | no | Use this to force the header into "sticky" mode. It will automatically hide the `children` and calculate the height spacer for `header`. |
