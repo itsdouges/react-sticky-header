@@ -45,6 +45,12 @@ export default class ReactStickyHeader extends Component {
     this._detatch();
   }
 
+  componentWillReceiveProps (nextProps: Props) {
+    if (nextProps.headerOnly !== this.props.headerOnly) {
+      this.calculateStickyState();
+    }
+  }
+
   calculateStickyState = () => {
     if (this._rafExecuting) {
       return;

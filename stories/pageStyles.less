@@ -30,6 +30,21 @@
   transition: transform 0.2s;
 }
 
+.Header_root:after {
+  opacity: 0;
+  content: '';
+  position: absolute;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.is-sticky .Header_root:after {
+  opacity: 1;
+}
+
 .is-sticky .Header_title {
   transform: scale(0.65);
 }
