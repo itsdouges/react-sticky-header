@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
+
+## [0.1.9][] - 2017-08-26
 ### Fixed
 - Recalculates sticky state on props change
 
@@ -54,7 +56,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Things that have changed
 
 
-[Unreleased]: https://github.com/madou/react-sticky-header/compare/v0.1.8...HEAD
+[Unreleased]: https://github.com/madou/react-sticky-header/compare/v0.1.9...HEAD
+[0.1.9]: https://github.com/madou/react-sticky-header/compare/v0.1.8...v0.1.9
 [0.1.8]: https://github.com/madou/react-sticky-header/compare/v0.1.7...v0.1.8
 [0.1.7]: https://github.com/madou/react-sticky-header/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/madou/react-sticky-header/compare/v0.1.5...v0.1.6
