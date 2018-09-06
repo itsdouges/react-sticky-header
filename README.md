@@ -60,6 +60,7 @@ const MyHeader = () => (
 | backgroundImage | string | no | Self explanatory. |
 | backgroundColor | string | no | Self explanatory. |
 | className | string | no | Self explanatory. |
+| stickyOffset | number | no | The number to offset the sticky header. |
 
 ### Sticky State
 
