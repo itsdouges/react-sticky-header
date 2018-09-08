@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
+
+## [0.2.0][] - 2018-09-08
 ### Added
 - `stickyOffset` prop - use to change the position of where the header should start being sticky.
 
@@ -58,7 +60,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Things that have changed
 
 
-[Unreleased]: https://github.com/madou/react-sticky-header/compare/v0.1.9...HEAD
+[Unreleased]: https://github.com/madou/react-sticky-header/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/madou/react-sticky-header/compare/v0.1.9...v0.2.0
 [0.1.9]: https://github.com/madou/react-sticky-header/compare/v0.1.8...v0.1.9
 [0.1.8]: https://github.com/madou/react-sticky-header/compare/v0.1.7...v0.1.8
 [0.1.7]: https://github.com/madou/react-sticky-header/compare/v0.1.6...v0.1.7

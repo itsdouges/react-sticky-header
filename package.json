@@ -1,6 +1,6 @@
 {
   "name": "react-sticky-header",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "Lightweight sticky header made for React that works with both colours and images.",
   "repository": "madou/react-sticky-header",
   "author": "Michael Dougall",
