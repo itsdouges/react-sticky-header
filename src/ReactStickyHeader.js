@@ -14,6 +14,7 @@ type Props = {
   backgroundImage?: string,
   backgroundColor?: string,
   className?: string,
+  stickyOffset?: number,
 };
 
 export default class ReactStickyHeader extends Component {
@@ -62,7 +63,8 @@ export default class ReactStickyHeader extends Component {
       const stickyHeaderHeight = this._fixed.offsetHeight;
       const headerContainer = this._root.offsetHeight;
       const headerContainerBoundingBox = this._root.getBoundingClientRect();
-      const pastStickyThreshold = ((headerContainer + headerContainerBoundingBox.top) - stickyHeaderHeight) <= 0;
+      const stickyOffset = this.props.stickyOffset;
+      const pastStickyThreshold = ((headerContainer + headerContainerBoundingBox.top) - stickyHeaderHeight) <= (stickyOffset || 0);
 
       if (pastStickyThreshold && !this.state.isSticky) {
         this.setState({
