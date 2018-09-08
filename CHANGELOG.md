@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
+### Added
+- `stickyOffset` prop - use to change the position of where the header should start being sticky.
 
 ## [0.1.9][] - 2017-08-26
 ### Fixed
